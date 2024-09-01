@@ -118,6 +118,8 @@ class MainHandler:
         await self.dbus_handler.send_spotify_command(SpotifyCommand.PAUSE)
         await self.ltc.write_message_to_lintronic(BeoCommand.AUDIO_POWER_OFF)
         self.state.last_known_playback_status = PlaybackStatus.PAUSED
+        if self.shutdown_timer_task is not None:
+            self.shutdown_timer_task.cancel()
 
     def start_shutdown_timer(self, timeout: timedelta) -> None:
         if self.shutdown_timer_task is not None:
